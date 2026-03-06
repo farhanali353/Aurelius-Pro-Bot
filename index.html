@@ -19,6 +19,16 @@
             align-items: center; overflow: hidden; perspective: 2000px;
         }
 
+        /* --- INSTALL BUTTON STYLE --- */
+        #install-btn {
+            display: none; position: fixed; bottom: 20px; left: 50%;
+            transform: translateX(-50%); z-index: 5000;
+            background: var(--neon-blue); color: #000;
+            padding: 12px 25px; border-radius: 50px; border: none;
+            font-family: 'Orbitron'; font-weight: 900; font-size: 12px;
+            box-shadow: 0 0 20px var(--neon-blue); cursor: pointer;
+        }
+
         .header-ui {
             position: fixed; top: 15px; left: 0; width: 100%;
             display: flex; justify-content: space-between; align-items: center;
@@ -61,6 +71,8 @@
     </style>
 </head>
 <body>
+
+    <button id="install-btn">INSTALL FARHAN BOT</button>
 
     <div class="header-ui">
         <div id="top-status" class="status-warning">⚠️ BASIC MODE (45%)</div>
@@ -134,12 +146,33 @@
     </div>
 
     <script>
-        // SERVICE WORKER REGISTRATION (Added by AI)
+        // --- INSTALL LOGIC ---
+        let deferredPrompt;
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBtn.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+
+        // SERVICE WORKER REGISTRATION
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.worker = navigator.serviceWorker.register('./sw.js')
+                navigator.serviceWorker.register('./sw.js')
                 .then(reg => console.log('PWA Ready'))
-                .catch(err => console.log('PWA Failed', err));
+                .catch(err => console.error('PWA Failed', err));
             });
         }
 

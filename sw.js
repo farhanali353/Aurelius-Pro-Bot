@@ -1,15 +1,19 @@
-const CACHE_NAME = 'farhan-bot-v5';
+const CACHE_NAME = 'farhan-8d-cache-v1';
 const assets = [
-  '/Farhan-Pro-Bot/',
-  '/Farhan-Pro-Bot/index.html',
-  '/Farhan-Pro-Bot/manifest.json',
+  './',
+  './index.html',
+  './manifest.json',
   'https://i.ibb.co/GfGypBGD/intelligent-robot-500x500.jpg'
 ];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE_NAME).then((c) => c.addAll(assets)));
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(assets))
+  );
 });
 
 self.addEventListener('fetch', (e) => {
-  e.respondWith(caches.match(e.request).then((r) => r || fetch(e.request)));
+  e.respondWith(
+    caches.match(e.request).then((res) => res || fetch(e.request))
+  );
 });

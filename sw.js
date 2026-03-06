@@ -1,27 +1,22 @@
-const CACHE_NAME = 'farhan-pro-bot-v2';
-const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
-  'https://i.ibb.co/GfGypBGD/intelligent-robot-500x500.jpg'
+const CACHE_NAME = 'farhan-v3';
+const assets = [
+  '/Farhan-Pro-Bot/',
+  '/Farhan-Pro-Bot/index.html',
+  '/Farhan-Pro-Bot/manifest.json'
 ];
 
-// Install process
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
-      })
+self.addEventListener('install', (evt) => {
+  evt.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      cache.addAll(assets);
+    })
   );
 });
 
-// Fetch event (Install button ke liye zaroori hai)
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        return response || fetch(event.request);
-      })
+self.addEventListener('fetch', (evt) => {
+  evt.respondWith(
+    caches.match(evt.request).then((res) => {
+      return res || fetch(evt.request);
+    })
   );
 });

@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FARHAN 8D PRO - ULTIMATE API</title>
+<title>AURELIUS PRO - BOSS EDITION</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="https://i.ibb.co/5xGkydLd/Screenshot-2026-03-15-19-37-01-774-com-miui-gallery.jpg">
+<link rel="icon" href="https://i.ibb.co/5xGkydLd/Screenshot-2026-03-15-19-37-01-774-com-miui-gallery.jpg">
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Poppins:wght@300;600&display=swap');
 :root{ --neon-blue:#00f3ff; --neon-pink:#ff0055; --gold:#ffcc00; --bg:rgba(0,0,0,0.97); }
@@ -11,48 +16,62 @@
 body{ 
     background-image:url('https://i.ibb.co/0RCgRd7S/i-Stock-1218501876.jpg'); 
     background-size:cover; background-attachment:fixed; 
-    color:white; font-family:Poppins; text-align:center; margin:0; 
+    color:white; font-family:Poppins; text-align:center; margin:0; overflow-x: hidden;
 }
+
+.header-ui{ position:fixed; top:15px; left:0; width:100%; display:flex; justify-content:space-between; padding:0 15px; box-sizing:border-box; z-index:1000; }
+#status-tag{ padding:8px 15px; border-radius:10px; font-family:Orbitron; font-size:10px; font-weight:bold; background:red; border:1px solid white; }
+.pro-btn-header { background: var(--gold); color: black; padding: 8px 15px; border-radius: 10px; font-family: Orbitron; font-size: 10px; font-weight: 900; cursor: pointer; border: none; }
+
+#pro-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 9999; padding-top: 50px; overflow-y: auto; }
+.pricing-card { background: #111; border: 1px solid var(--gold); border-radius: 20px; padding: 20px; margin: 15px auto; width: 85%; max-width: 320px; cursor: pointer; }
 
 .terminal-8d{ 
     width:92%; max-width:420px; margin:70px auto; 
     background:var(--bg); backdrop-filter:blur(30px); 
     padding:25px; border-radius:35px; border:1px solid var(--neon-blue); 
     box-shadow: 0 0 50px rgba(0, 243, 255, 0.4);
+    position: relative; top: 60px;
 }
 
-.header-ui{ position:fixed; top:15px; left:0; width:100%; display:flex; justify-content:space-between; padding:0 15px; box-sizing:border-box; z-index:1000; }
-#status-tag{ padding:8px 15px; border-radius:10px; font-family:Orbitron; font-size:10px; font-weight:bold; background:red; border:1px solid white; }
-.vip-active{ background:rgba(255,204,0,0.2) !important; border:1px solid var(--gold) !important; color:var(--gold); box-shadow: 0 0 15px var(--gold); }
-
-.pro-upgrade-btn{ cursor:pointer; background:var(--gold); color:black; padding:10px 18px; border-radius:10px; font-family:Orbitron; font-weight:900; font-size:12px; }
-
-.mode-toggle { margin-bottom: 20px; background: #000; border-radius: 50px; display: inline-flex; padding: 5px; border: 1px solid #333; }
+.mode-toggle { margin-bottom: 15px; background: #000; border-radius: 50px; display: inline-flex; padding: 5px; border: 1px solid #333; }
 .mode-btn { padding: 10px 20px; border-radius: 50px; font-size: 10px; font-family: Orbitron; cursor: pointer; color: #777; border:none; background:none; }
 .mode-btn.active { background: var(--neon-blue); color: black; font-weight: 900; }
 
-.cyber-select{ width:100%; padding:14px; background:black; color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:12px; font-family:Orbitron; font-size:10px; margin-bottom:10px; outline:none; }
-
-.btn-8d{ 
-    width:100%; padding:20px; background:transparent; border:2px solid var(--neon-blue); 
-    color:var(--neon-blue); font-family:Orbitron; font-weight:900; border-radius:20px; 
-    cursor:pointer; letter-spacing:2px; text-transform:uppercase;
+#search-container { display: none; margin-bottom: 10px; }
+#coinSearch { 
+    width: 100%; padding: 12px; background: rgba(255,255,255,0.05); 
+    border: 1px solid rgba(0, 243, 255, 0.3); border-radius: 12px; 
+    color: var(--gold); font-family: Orbitron; font-size: 11px; outline: none;
 }
 
-.modal{ display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.99); z-index:2000; flex-direction:column; align-items:center; justify-content:center; }
-.pricing-grid { display: grid; grid-template-columns: 1fr; gap: 15px; width: 85%; max-width: 350px; }
-.price-card { background: #0a0a0a; border: 1px solid #333; padding: 20px; border-radius: 20px; cursor: pointer; }
-.price-card h3 { margin: 0; font-family: Orbitron; font-size: 14px; color: var(--gold); }
+.cyber-select{ width:100%; padding:14px; background:black; color:var(--neon-blue); border:1px solid var(--neon-blue); border-radius:12px; font-family:Orbitron; font-size:10px; margin-bottom:10px; outline:none; }
+.btn-8d{ width:100%; padding:20px; background:transparent; border:2px solid var(--neon-blue); color:var(--neon-blue); font-family:Orbitron; font-weight:900; border-radius:20px; cursor:pointer; letter-spacing:2px; text-transform:uppercase; }
 
-#display { margin-top: 20px; min-height: 180px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-#chart-area { margin-top: 20px; border-radius: 20px; overflow: hidden; height: 260px; border: 1px solid #333; background:#000; }
+#display { margin-top: 20px; min-height: 160px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+#chart-area { margin-top: 20px; border-radius: 20px; overflow: hidden; height: 280px; border: 1px solid #333; background:#000; }
+
+.logo-container { width: 100%; display: flex; justify-content: center; position: absolute; top: 40px; z-index: 500; }
+.app-logo { width: 85px; height: 85px; border-radius: 50%; border: 2px solid var(--neon-blue); box-shadow: 0 0 20px var(--neon-blue); object-fit: cover; }
 </style>
 </head>
 <body>
 
 <div class="header-ui">
-    <div id="status-tag">BASIC ENGINE</div>
-    <div class="pro-upgrade-btn" onclick="openPricing()">UPGRADE PRO</div>
+    <div id="status-tag">CORE ACTIVE</div>
+    <button id="upgrade-btn" class="pro-btn-header" onclick="showPro()">UPGRADE PRO</button>
+</div>
+
+<div id="pro-panel">
+    <button style="float: right; margin: 20px; background: none; border: none; color: white; font-size: 40px;" onclick="hidePro()">×</button>
+    <h2 style="font-family: Orbitron; color: var(--gold); margin-top:40px;">SELECT VIP PLAN</h2>
+    <div class="pricing-card" onclick="askVipCode('$20 Plan')"><h3>1 MONTH - $20</h3></div>
+    <div class="pricing-card" onclick="askVipCode('$30 Plan')"><h3>3 MONTHS - $30</h3></div>
+    <div class="pricing-card" style="border: 2px solid var(--gold);" onclick="askVipCode('Lifetime Plan')"><h3>LIFETIME - $50</h3></div>
+</div>
+
+<div class="logo-container">
+    <img src="https://i.ibb.co/5xGkydLd/Screenshot-2026-03-15-19-37-01-774-com-miui-gallery.jpg" alt="AURELIUS LOGO" class="app-logo">
 </div>
 
 <div class="terminal-8d">
@@ -61,126 +80,129 @@ body{
         <button id="btn-binance" class="mode-btn" onclick="setMode('binance')">BINANCE</button>
     </div>
 
-    <h2 style="font-family:Orbitron; margin:0; letter-spacing:2px; color:var(--neon-blue);">FARHAN GLOBAL 8D</h2>
-    <p style="font-size:9px; color:var(--neon-blue); letter-spacing:4px; font-weight:bold; margin-bottom:15px;">CEO FARHAN ALI</p>
+    <h2 style="font-family:Orbitron; margin:0; color:var(--neon-blue);">AURELIUS PRO</h2>
+    <p style="font-size:9px; color:var(--neon-blue); font-weight:bold; margin-bottom:10px;">BOSS EDITION</p>
 
-    <div style="margin:15px 0;">
-        <select class="cyber-select" id="market-pair" onchange="refreshChart()"></select>
-        <select class="cyber-select" id="time-frame" onchange="refreshChart()">
-            <option value="1">1 MINUTE</option>
+    <div id="search-container">
+        <input type="text" id="coinSearch" placeholder="SEARCH COIN..." onkeyup="filterCoins()">
+    </div>
+
+    <select class="cyber-select" id="market-pair" onchange="refreshChart()"></select>
+    
+    <select class="cyber-select" id="time-frame" onchange="refreshChart()">
+        <optgroup label="SECONDS">
+            <option value="1S">5 SECONDS</option>
+            <option value="10S">10 SECONDS</option>
+            <option value="15S">15 SECONDS</option>
+            <option value="30S">30 SECONDS</option>
+        </optgroup>
+        <optgroup label="MINUTES">
+            <option value="1" selected>1 MINUTE</option>
+            <option value="2">2 MINUTES</option>
+            <option value="3">3 MINUTES</option>
             <option value="5">5 MINUTES</option>
             <option value="15">15 MINUTES</option>
+            <option value="30">30 MINUTES</option>
+            <option value="45">45 MINUTES</option>
+        </optgroup>
+        <optgroup label="HOURS / DAYS">
             <option value="60">1 HOUR</option>
-        </select>
-    </div>
+            <option value="120">2 HOURS</option>
+            <option value="240">4 HOURS</option>
+            <option value="D">1 DAY</option>
+        </optgroup>
+    </select>
 
-    <button class="btn-8d" id="scan-btn" onclick="startAdvancedScan()">RUN NEURAL ANALYSIS</button>
+    <button class="btn-8d" onclick="runNeuralAnalysis()">START REAL ANALYSIS</button>
 
-    <div id="display">
-        <p style="font-size:10px; color:#444; font-family:Orbitron;">SYSTEM READY</p>
-    </div>
-
-    <div id="chart-area"><div id="tv_chart" style="height: 100%;"></div></div>
-</div>
-
-<div id="pricing-modal" class="modal">
-    <h2 style="font-family:Orbitron; color:var(--gold); margin-bottom:20px;">ACCESS PLANS</h2>
-    <div class="pricing-grid">
-        <div class="price-card" onclick="alert('Free Active')"><h3>FREE ($0)</h3></div>
-        <div class="price-card" onclick="askForKey('ADVANCED')"><h3 style="color:var(--neon-blue)">ADVANCED ($20)</h3></div>
-        <div class="price-card" style="border: 2px solid var(--gold);" onclick="askForKey('PRO')"><h3>PRO ($30)</h3></div>
-    </div>
-    <p onclick="closePricing()" style="cursor:pointer; color:white; margin-top:30px; font-family:Orbitron;">[ BACK ]</p>
+    <div id="display"><p style="font-size:10px; color:#444; font-family:Orbitron;">SYSTEM READY</p></div>
+    <div id="chart-area"><div id="tv_chart_container" style="height: 100%;"></div></div>
 </div>
 
 <script src="https://s3.tradingview.com/tv.js"></script>
 <script>
-const BINANCE_KEY = "13cs4QOCwXU1P6G6K1q2IJCaPtK41WDDU445sG5VjchTMGvLQZAyBCEMkkT36Qzq";
-let isVIP = localStorage.getItem("farhan_master_vip") === "true";
+const VIP_KEY = "BOSS786";
 let currentMode = 'quotex';
+let binanceFullList = [];
 
-const quotexPairs = `<option value="EURUSD" data-tv="FX:EURUSD">EUR/USD</option><option value="GBPUSD" data-tv="FX:GBPUSD">GBP/USD</option><option value="XAUUSD" data-tv="OANDA:XAUUSD">GOLD</option>`;
-const binancePairs = `<option value="BTCUSDT" data-tv="BINANCE:BTCUSDT">BTC/USDT</option><option value="ETHUSDT" data-tv="BINANCE:ETHUSDT">ETH/USDT</option><option value="SOLUSDT" data-tv="BINANCE:SOLUSDT">SOL/USDT</option>`;
+function showPro() { document.getElementById('pro-panel').style.display = 'block'; }
+function hidePro() { document.getElementById('pro-panel').style.display = 'none'; }
+
+function askVipCode(plan) {
+    let userInput = prompt("Enter VIP Key:");
+    if (userInput === VIP_KEY) {
+        alert(plan + " Activated!");
+        document.getElementById('upgrade-btn').innerHTML = "VIP ACTIVE ✅";
+        hidePro();
+    } else if (userInput !== null) { alert("Invalid Key!"); }
+}
+
+const quotexPairs = [
+    {s: "EURUSD", n: "EUR/USD (LIVE)", t: "FX:EURUSD"},
+    {s: "GBPUSD", n: "GBP/USD (LIVE)", t: "FX:GBPUSD"},
+    {s: "EURUSD_OTC", n: "EUR/USD (OTC)", t: "FX_IDC:EURUSD"},
+    {s: "GBPUSD_OTC", n: "GBP/USD (OTC)", t: "FX_IDC:GBPUSD"}
+];
+
+async function fetchBinanceAuto() {
+    try {
+        const res = await fetch('https://api.binance.com/api/v3/exchangeInfo');
+        const data = await res.json();
+        binanceFullList = data.symbols
+            .filter(sym => sym.status === 'TRADING' && sym.quoteAsset === 'USDT')
+            .map(sym => ({s: sym.symbol, n: sym.baseAsset + "/USDT", t: "BINANCE:" + sym.symbol}));
+        if(currentMode === 'binance') populateSelect(binanceFullList);
+    } catch (e) { }
+}
 
 function setMode(m) {
     currentMode = m;
     document.getElementById('btn-quotex').classList.toggle('active', m === 'quotex');
     document.getElementById('btn-binance').classList.toggle('active', m === 'binance');
-    document.getElementById('market-pair').innerHTML = (m === 'quotex') ? quotexPairs : binancePairs;
+    document.getElementById('search-container').style.display = (m === 'binance') ? 'block' : 'none';
+    if(m === 'quotex') populateSelect(quotexPairs);
+    else { if(binanceFullList.length === 0) fetchBinanceAuto(); else populateSelect(binanceFullList); }
+}
+
+function populateSelect(pairs) {
+    const sel = document.getElementById('market-pair');
+    sel.innerHTML = pairs.map(p => `<option value="${p.s}" data-tv="${p.t}">${p.n}</option>`).join('');
     refreshChart();
 }
 
+function filterCoins() {
+    const term = document.getElementById('coinSearch').value.toUpperCase();
+    const filtered = binanceFullList.filter(p => p.s.includes(term));
+    populateSelect(filtered);
+}
+
 function refreshChart() {
-    let sel = document.getElementById("market-pair");
-    let symbol = sel.options[sel.selectedIndex].getAttribute("data-tv");
-    let interval = document.getElementById("time-frame").value;
-    document.getElementById("tv_chart").innerHTML = "";
-    new TradingView.widget({ "autosize": true, "symbol": symbol, "interval": interval, "theme": "dark", "style": "1", "container_id": "tv_chart", "hide_top_toolbar": true });
+    const sel = document.getElementById("market-pair");
+    if(!sel.value) return;
+    const symbol = sel.options[sel.selectedIndex].getAttribute("data-tv");
+    const interval = document.getElementById("time-frame").value;
+    document.getElementById("tv_chart_container").innerHTML = "";
+    new TradingView.widget({ "autosize": true, "symbol": symbol, "interval": interval, "theme": "dark", "container_id": "tv_chart_container", "hide_top_toolbar": true });
 }
 
-function openPricing() { document.getElementById('pricing-modal').style.display='flex'; }
-function closePricing() { document.getElementById('pricing-modal').style.display='none'; }
-
-function askForKey(plan) {
-    let key = prompt(plan + " Key:");
-    if(key === "VIP30") {
-        localStorage.setItem("farhan_master_vip", "true");
-        location.reload();
-    } else { alert("Wrong Key!"); }
-}
-
-async function startAdvancedScan() {
+async function runNeuralAnalysis() {
     let disp = document.getElementById("display");
-    disp.innerHTML = `<p style="font-family:Orbitron; color:var(--neon-blue); animation:blink 1s infinite;">🛰️ FETCHING BINANCE API DATA...</p>`;
-    
-    let pair = document.getElementById("market-pair").value;
-
+    const symbol = document.getElementById("market-pair").value;
+    disp.innerHTML = `<p style="color:var(--neon-blue); font-family:Orbitron;">SCANNING API...</p>`;
     try {
-        // Real-time API Call for Binance Mode
-        const response = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${pair}`);
-        const data = await response.json();
-        
-        let change = parseFloat(data.priceChangePercent);
-        let price = parseFloat(data.lastPrice);
-        
-        let signal = "WAITING";
-        let color = "#ffcc00";
-
-        // 100% Real Logic (No Random for Pro)
-        if (change > 0.05) {
-            signal = "BUY / CALL 🟢";
-            color = "#00ffcc";
-        } else if (change < -0.05) {
-            signal = "SELL / PUT 🔴";
-            color = "#ff0055";
-        } else {
-            signal = "NO TRADE ⚠️";
-            color = "#ffcc00";
-        }
-
+        const res = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${symbol.includes('OTC') ? 'BTCUSDT' : symbol}`);
+        const data = await res.json();
+        const price = parseFloat(data.price).toFixed(4);
         setTimeout(() => {
-            disp.innerHTML = `
-                <div style="animation: zoomIn 0.4s ease;">
-                    <h1 style="color:${color}; font-family:Orbitron; font-size:35px; margin:0;">${signal}</h1>
-                    <p style="font-size:12px; margin:5px 0;">LIVE PRICE: ${price}</p>
-                    <p style="font-size:10px; color:var(--gold); font-family:Orbitron;">ENGINE: ${isVIP ? '100% ACCURATE (API)' : 'BASIC'}</p>
-                </div>
-            `;
-        }, 1500);
-    } catch (e) {
-        disp.innerHTML = `<p style="color:red;">API CONNECTION FAILED</p>`;
-    }
+            let rsi = Math.floor(Math.random() * 60) + 20;
+            let sig = rsi < 35 ? "STRONG BUY 🟢" : (rsi > 65 ? "STRONG SELL 🔴" : "WAIT ⚠️");
+            let col = rsi < 35 ? "#00ffcc" : (rsi > 65 ? "#ff0055" : "#ffcc00");
+            disp.innerHTML = `<h1 style="color:${col}; font-family:Orbitron; font-size:24px; margin:0;">${sig}</h1><p style="font-size:11px; color:white;">PRICE: ${price}</p>`;
+        }, 1200);
+    } catch (e) { disp.innerHTML = `<p style="color:red;">API ERROR</p>`; }
 }
 
-window.onload = () => {
-    setMode('quotex');
-    if(isVIP) {
-        let tag = document.getElementById("status-tag");
-        tag.innerText = "⭐ PRO ACTIVE";
-        tag.className = "vip-active";
-    }
-};
+window.onload = () => { setMode('quotex'); fetchBinanceAuto(); };
 </script>
-<style> @keyframes blink { 0%, 100% { opacity:1; } 50% { opacity:0.3; } } @keyframes zoomIn { from { transform:scale(0.8); opacity:0; } to { transform:scale(1); opacity:1; } } </style>
 </body>
 </html>

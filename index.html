@@ -122,6 +122,7 @@ body{
 <script src="https://s3.tradingview.com/tv.js"></script>
 <script>
 const VIP_KEY = "BOSS786";
+const BINANCE_API_KEY = "DYDLUSqc0IUpCsz3LYqchEzabu6tnoK8tpUekypUh5p2seewz14jwww4hCZPzUAk"; 
 let currentMode = 'quotex';
 let binanceFullList = [];
 
@@ -202,67 +203,48 @@ async function runNeuralAnalysis() {
     let disp = document.getElementById("display");
     const select = document.getElementById("market-pair");
     const symbol = select.value;
-    const interval = document.getElementById("time-frame").value;
-    const pairName = select.options[select.selectedIndex].text;
+    let interval = document.getElementById("time-frame").value;
+    if(interval.includes('S')) { interval = '1m'; }
     
-    disp.innerHTML = `<p style="color:var(--neon-blue); font-family:Orbitron;">SCANNING MULTI-INDICATORS...</p>`;
+    disp.innerHTML = `<p style="color:var(--neon-blue); font-family:Orbitron;">ENGINEERING INDICATORS...</p>`;
     
     try {
-        if (currentMode === 'binance') {
-            const res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval.includes('S') ? '1m' : interval}&limit=50`);
-            const data = await res.json();
-            
-            // 1. RSI Calculation (14 Period)
-            let gains = 0, losses = 0;
-            for (let i = 36; i < 50; i++) {
-                let diff = parseFloat(data[i][4]) - parseFloat(data[i-1][4]);
-                if (diff >= 0) gains += diff; else losses -= diff;
-            }
-            let rs = gains / (losses || 1);
-            let rsi = 100 - (100 / (1 + rs));
-
-            // 2. EMA Calculation (20 Period)
-            let sum = 0;
-            for (let i = 30; i < 50; i++) sum += parseFloat(data[i][4]);
-            let ema20 = sum / 20;
-
-            // 3. Volume Check
-            let currentVol = parseFloat(data[49][5]);
-            let avgVol = 0;
-            for (let i = 40; i < 49; i++) avgVol += parseFloat(data[i][5]);
-            avgVol = avgVol / 9;
-
-            const currentPrice = parseFloat(data[49][4]).toFixed(4);
-
-            setTimeout(() => {
-                let sig = "WAIT ⚠️", col = "#ffcc00";
-                
-                // MULTI-CONFIRMATION LOGIC
-                let buySignal = (rsi < 35 && currentPrice > ema20 && currentVol > avgVol);
-                let sellSignal = (rsi > 65 && currentPrice < ema20 && currentVol > avgVol);
-
-                if (buySignal) { sig = "STRONG BUY 🟢"; col = "#00ffcc"; }
-                else if (sellSignal) { sig = "STRONG SELL 🔴"; col = "#ff0055"; }
-                
-                disp.innerHTML = `<h1 style="color:${col}; font-family:Orbitron; font-size:24px; margin:0;">${sig}</h1>
-                                  <p style="font-size:10px; color:white;">RSI: ${rsi.toFixed(1)} | EMA: ${ema20.toFixed(4)} | VOL: ${currentVol > avgVol ? 'HIGH' : 'LOW'}</p>`;
-            }, 1000);
-        } else {
-            setTimeout(() => {
-                let rsi = Math.floor(Math.random() * 60) + 20;
-                let sig = rsi < 35 ? "STRONG BUY 🟢" : (rsi > 65 ? "STRONG SELL 🔴" : "WAIT ⚠️");
-                let col = rsi < 35 ? "#00ffcc" : (rsi > 65 ? "#ff0055" : "#ffcc00");
-                disp.innerHTML = `<h1 style="color:${col}; font-family:Orbitron; font-size:24px; margin:0;">${sig}</h1><p style="font-size:11px; color:white;">ANALYSIS COMPLETE</p>`;
-            }, 1200);
+        const headers = { 'X-MBX-APIKEY': BINANCE_API_KEY };
+        let res = await fetch(`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=100`, { headers });
+        
+        if(!res.ok) res = await fetch(`https://api1.binance.com/api/v3/klines?symbol=${symbol}&interval=${interval}&limit=100`);
+        
+        const data = await res.json();
+        
+        let gains = 0, losses = 0;
+        for (let i = 86; i < 100; i++) {
+            let diff = parseFloat(data[i][4]) - parseFloat(data[i-1][4]);
+            if (diff >= 0) gains += diff; else losses -= diff;
         }
-    } catch (e) { disp.innerHTML = `<p style="color:red; font-family:Orbitron;">SYSTEM BUSY</p>`; }
+        let rsi = 100 - (100 / (1 + (gains / (losses || 1))));
+        let ema20 = data.slice(80, 100).reduce((a, b) => a + parseFloat(b[4]), 0) / 20;
+        let macdFast = data.slice(88, 100).reduce((a, b) => a + parseFloat(b[4]), 0) / 12;
+        let macdSlow = data.slice(74, 100).reduce((a, b) => a + parseFloat(b[4]), 0) / 26;
+        const currentPrice = parseFloat(data[99][4]);
+
+        setTimeout(() => {
+            let sig = "WAIT ⚠️", col = "#ffcc00";
+            let buy = (rsi < 48 && currentPrice > ema20 && macdFast > macdSlow);
+            let sell = (rsi > 52 && currentPrice < ema20 && macdFast < macdSlow);
+
+            if (buy) { sig = "STRONG BUY 🟢"; col = "#00ffcc"; }
+            else if (sell) { sig = "STRONG SELL 🔴"; col = "#ff0055"; }
+            
+            disp.innerHTML = `<h1 style="color:${col}; font-family:Orbitron; font-size:24px; margin:0;">${sig}</h1>
+                              <p style="font-size:10px; color:white;">RSI: ${rsi.toFixed(1)} | PRICE: ${currentPrice.toFixed(4)}</p>`;
+        }, 800);
+
+    } catch (e) {
+        disp.innerHTML = `<p style="color:var(--neon-pink); font-family:Orbitron;">DATA SYNC ERROR</p>`;
+    }
 }
 
-window.onload = () => { 
-    checkVipStatus();
-    setMode('quotex'); 
-    fetchBinanceAuto(); 
-};
+window.onload = () => { checkVipStatus(); setMode('quotex'); fetchBinanceAuto(); };
 </script>
 </body>
 </html>
